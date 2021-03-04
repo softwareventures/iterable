@@ -1,5 +1,5 @@
 import test from "ava";
-import {isIterable} from "./index";
+import {first, isIterable} from "./index";
 
 function* generator(): Iterable<number> {
     yield 1;
@@ -16,4 +16,8 @@ test("isIterable", t => {
     t.false(isIterable({a: 1, b: 2}));
     t.true(isIterable([1, 2, 3]));
     t.true(isIterable(generator()));
+});
+
+test("first", t => {
+    t.is(1, first(generator()));
 });
