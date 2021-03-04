@@ -56,3 +56,7 @@ export function last<T>(iterable: Iterable<T>): T | null {
     }
     return result;
 }
+
+export function empty(iterable: Iterable<unknown>): boolean {
+    return iterable[Symbol.iterator]().next().done ?? false;
+}

@@ -1,11 +1,13 @@
 import test from "ava";
-import {first, initial, isIterable, last, tail, toArray} from "./index";
+import {empty, first, initial, isIterable, last, tail, toArray} from "./index";
 
 function* generator(): Iterable<number> {
     yield 1;
     yield 2;
     yield 3;
 }
+
+function* emptyGenerator(): Iterable<never> {}
 
 test("isIterable", t => {
     t.false(isIterable(undefined));
@@ -36,4 +38,11 @@ test("last", t => {
     t.is(null, last([]));
     t.is(3, last(generator()));
     t.is(4, last([1, 2, 3, 4]));
+});
+
+test("empty", t => {
+    t.true(empty([]));
+    t.true(empty(emptyGenerator()));
+    t.false(empty([1, 2, 3, 4]));
+    t.false(empty(generator()));
 });
