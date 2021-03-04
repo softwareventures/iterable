@@ -6,6 +6,10 @@ export function iterator<T>(iterable: Iterable<T>): Iterator<T> {
     return iterable[Symbol.iterator]();
 }
 
+export function toArray<T>(iterable: Iterable<T>): T[] {
+    return Array.from(iterable);
+}
+
 export function first<T>(iterable: Iterable<T>): T | null {
     const iterator = iterable[Symbol.iterator]();
     const {done, value} = iterator.next();
