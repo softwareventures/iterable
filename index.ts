@@ -44,3 +44,15 @@ export function* initial<T>(iterable: Iterable<T>): Iterable<T> {
         ({done, value: nextValue} = iterator.next());
     }
 }
+
+export function last<T>(iterable: Iterable<T>): T | null {
+    const iterator = iterable[Symbol.iterator]();
+    let done: boolean | undefined = false;
+    let result: T | null = null;
+    let value: T | null = null;
+    while (!done) {
+        result = value;
+        ({done, value} = iterator.next());
+    }
+    return result;
+}
