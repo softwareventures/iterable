@@ -1,5 +1,16 @@
 import test from "ava";
-import {empty, first, initial, isIterable, last, slice, tail, takeWhile, toArray} from "./index";
+import {
+    dropWhile,
+    empty,
+    first,
+    initial,
+    isIterable,
+    last,
+    slice,
+    tail,
+    takeWhile,
+    toArray
+} from "./index";
 
 function* generator(): Iterable<number> {
     yield 1;
@@ -57,4 +68,8 @@ test("slice", t => {
 
 test("takeWhile", t => {
     t.deepEqual([1, 2, 3], toArray(takeWhile([1, 2, 3, 4, 3, 2, 1], e => e < 4)));
+});
+
+test("dropWhile", t => {
+    t.deepEqual([4, 3, 2, 1], toArray(dropWhile([1, 2, 3, 4, 3, 2, 1], e => e < 4)));
 });

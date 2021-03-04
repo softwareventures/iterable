@@ -112,3 +112,24 @@ export function takeWhileFn<T>(
 ): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => takeWhile(iterable, predicate);
 }
+
+export function* dropWhile<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T) => boolean
+): Iterable<T> {
+    const iterator = iterable[Symbol.iterator]();
+    let {done, value} = iterator.next();
+    while (!done && predicate(value)) {
+        ({done, value} = iterator.next());
+    }
+    while (!done) {
+        yield value;
+        ({done, value} = iterator.next());
+    }
+}
+
+export function dropWhileFn<T>(
+    predicate: (element: T) => boolean
+): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => dropWhile(iterable, predicate);
+}
