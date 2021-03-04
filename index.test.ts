@@ -6,6 +6,7 @@ import {
     initial,
     isIterable,
     last,
+    map,
     slice,
     tail,
     takeWhile,
@@ -72,4 +73,15 @@ test("takeWhile", t => {
 
 test("dropWhile", t => {
     t.deepEqual([4, 3, 2, 1], toArray(dropWhile([1, 2, 3, 4, 3, 2, 1], e => e < 4)));
+});
+
+test("map", t => {
+    t.deepEqual(
+        [2, 3, 4],
+        toArray(map(generator(), e => e + 1))
+    );
+    t.deepEqual(
+        [1, 20, 3],
+        toArray(map(generator(), (e, i) => (i === 1 ? e * 10 : e)))
+    );
 });
