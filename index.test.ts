@@ -1,5 +1,5 @@
 import test from "ava";
-import {empty, first, initial, isIterable, last, tail, toArray} from "./index";
+import {empty, first, initial, isIterable, last, slice, tail, toArray} from "./index";
 
 function* generator(): Iterable<number> {
     yield 1;
@@ -45,4 +45,12 @@ test("empty", t => {
     t.true(empty(emptyGenerator()));
     t.false(empty([1, 2, 3, 4]));
     t.false(empty(generator()));
+});
+
+test("slice", t => {
+    t.deepEqual([2, 3, 4], toArray(slice([1, 2, 3, 4], 1)));
+    t.deepEqual([2, 3, 4], toArray(slice([1, 2, 3, 4, 5], 1, 4)));
+    t.deepEqual([3], toArray(slice(generator(), 2)));
+    t.deepEqual([1, 2], toArray(slice(generator(), 0, 2)));
+    t.deepEqual([], toArray(slice(emptyGenerator(), 3, 5)));
 });

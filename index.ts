@@ -20,15 +20,8 @@ export function first<T>(iterable: Iterable<T>): T | null {
     }
 }
 
-export function* tail<T>(iterable: Iterable<T>): Iterable<T> {
-    const iterator = iterable[Symbol.iterator]();
-    let {done, value} = iterator.next();
-    while (!done) {
-        ({done, value} = iterator.next());
-        if (!done) {
-            yield value;
-        }
-    }
+export function tail<T>(iterable: Iterable<T>): Iterable<T> {
+    return slice(iterable, 1);
 }
 
 export function* initial<T>(iterable: Iterable<T>): Iterable<T> {
@@ -59,4 +52,21 @@ export function last<T>(iterable: Iterable<T>): T | null {
 
 export function empty(iterable: Iterable<unknown>): boolean {
     return iterable[Symbol.iterator]().next().done ?? false;
+}
+
+export function* slice<T>(iterable: Iterable<T>, start = 0, end = Infinity): Iterable<T> {
+    const iterator = iterable[Symbol.iterator]();
+    for (let i = 0; i < start; ++i) {
+        const {done} = iterator.next();
+        if (done) {
+            return;
+        }
+    }
+    for (let i = start; i < end; ++i) {
+        const {done, value} = iterator.next();
+        if (done) {
+            return;
+        }
+        yield value;
+    }
 }
