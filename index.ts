@@ -70,3 +70,7 @@ export function* slice<T>(iterable: Iterable<T>, start = 0, end = Infinity): Ite
         yield value;
     }
 }
+
+export function sliceFn<T>(start: number, end = Infinity): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => slice(iterable, start, end);
+}
