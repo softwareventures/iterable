@@ -69,6 +69,7 @@ test("slice", t => {
 
 test("takeWhile", t => {
     t.deepEqual([1, 2, 3], toArray(takeWhile([1, 2, 3, 4, 3, 2, 1], e => e < 4)));
+    t.deepEqual([1, 2], toArray(takeWhile(generator(), (_, i) => i < 2)));
 });
 
 test("dropWhile", t => {
@@ -76,12 +77,6 @@ test("dropWhile", t => {
 });
 
 test("map", t => {
-    t.deepEqual(
-        [2, 3, 4],
-        toArray(map(generator(), e => e + 1))
-    );
-    t.deepEqual(
-        [1, 20, 3],
-        toArray(map(generator(), (e, i) => (i === 1 ? e * 10 : e)))
-    );
+    t.deepEqual([2, 3, 4], toArray(map(generator(), e => e + 1)));
+    t.deepEqual([1, 20, 3], toArray(map(generator(), (e, i) => (i === 1 ? e * 10 : e))));
 });
