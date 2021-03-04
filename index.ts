@@ -30,3 +30,17 @@ export function* tail<T>(iterable: Iterable<T>): Iterable<T> {
         }
     }
 }
+
+export function* initial<T>(iterable: Iterable<T>): Iterable<T> {
+    const iterator = iterable[Symbol.iterator]();
+    let {done, value} = iterator.next();
+    let nextValue: T | null = null;
+    if (!done) {
+        ({done, value: nextValue} = iterator.next());
+    }
+    while (!done) {
+        yield value;
+        value = nextValue;
+        ({done, value: nextValue} = iterator.next());
+    }
+}
