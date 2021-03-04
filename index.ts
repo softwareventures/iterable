@@ -74,3 +74,11 @@ export function* slice<T>(iterable: Iterable<T>, start = 0, end = Infinity): Ite
 export function sliceFn<T>(start: number, end = Infinity): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => slice(iterable, start, end);
 }
+
+export function take<T>(iterable: Iterable<T>, count: number): Iterable<T> {
+    return slice(iterable, 0, count);
+}
+
+export function takeFn<T>(count: number): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => take(iterable, count);
+}
