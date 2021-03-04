@@ -1,5 +1,5 @@
 import test from "ava";
-import {empty, first, initial, isIterable, last, slice, tail, toArray} from "./index";
+import {empty, first, initial, isIterable, last, slice, tail, takeWhile, toArray} from "./index";
 
 function* generator(): Iterable<number> {
     yield 1;
@@ -53,4 +53,8 @@ test("slice", t => {
     t.deepEqual([3], toArray(slice(generator(), 2)));
     t.deepEqual([1, 2], toArray(slice(generator(), 0, 2)));
     t.deepEqual([], toArray(slice(emptyGenerator(), 3, 5)));
+});
+
+test("takeWhile", t => {
+    t.deepEqual([1, 2, 3], toArray(takeWhile([1, 2, 3, 4, 3, 2, 1], e => e < 4)));
 });
