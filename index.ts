@@ -153,3 +153,35 @@ export function mapFn<T, U>(
 ): (iterable: Iterable<T>) => Iterable<U> {
     return iterable => map(iterable, f);
 }
+
+export function filter<T, U extends T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => element is U
+): Iterable<U>;
+export function filter<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): Iterable<T>;
+export function* filter<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): Iterable<T> {
+    let i = 0;
+    for (const element of iterable) {
+        if (predicate(element, i++)) {
+            yield element;
+        }
+    }
+}
+
+export function filterFn<T, U extends T>(
+    predicate: (element: T, index: number) => element is U
+): (iterable: Iterable<T>) => Iterable<U>;
+export function filterFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => Iterable<T>;
+export function filterFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => filter(iterable, predicate);
+}

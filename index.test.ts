@@ -2,6 +2,7 @@ import test from "ava";
 import {
     dropWhile,
     empty,
+    filter,
     first,
     initial,
     isIterable,
@@ -80,4 +81,9 @@ test("dropWhile", t => {
 test("map", t => {
     t.deepEqual([2, 3, 4], toArray(map(generator(), e => e + 1)));
     t.deepEqual([1, 20, 3], toArray(map(generator(), (e, i) => (i === 1 ? e * 10 : e))));
+});
+
+test("filter", t => {
+    t.deepEqual([1, 3], toArray(filter(generator(), e => e % 2 === 1)));
+    t.deepEqual([1, 2, 5], toArray(filter([1, 3, 2, 4, 5], (_, i) => i % 2 === 0)));
 });
