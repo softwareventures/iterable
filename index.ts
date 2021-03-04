@@ -19,3 +19,14 @@ export function first<T>(iterable: Iterable<T>): T | null {
         return value;
     }
 }
+
+export function* tail<T>(iterable: Iterable<T>): Iterable<T> {
+    const iterator = iterable[Symbol.iterator]();
+    let {done, value} = iterator.next();
+    while (!done) {
+        ({done, value} = iterator.next());
+        if (!done) {
+            yield value;
+        }
+    }
+}
