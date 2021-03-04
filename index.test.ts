@@ -74,6 +74,7 @@ test("takeWhile", t => {
 
 test("dropWhile", t => {
     t.deepEqual([4, 3, 2, 1], toArray(dropWhile([1, 2, 3, 4, 3, 2, 1], e => e < 4)));
+    t.deepEqual([3], toArray(dropWhile(generator(), (_, i) => i < 2)));
 });
 
 test("map", t => {

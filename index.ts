@@ -117,12 +117,14 @@ export function takeWhileFn<T>(
 
 export function* dropWhile<T>(
     iterable: Iterable<T>,
-    predicate: (element: T) => boolean
+    predicate: (element: T, index: number) => boolean
 ): Iterable<T> {
     const iterator = iterable[Symbol.iterator]();
     let {done, value} = iterator.next();
-    while (!done && predicate(value)) {
+    let i = 0;
+    while (!done && predicate(value, i)) {
         ({done, value} = iterator.next());
+        ++i;
     }
     while (!done) {
         yield value;
@@ -131,7 +133,7 @@ export function* dropWhile<T>(
 }
 
 export function dropWhileFn<T>(
-    predicate: (element: T) => boolean
+    predicate: (element: T, index: number) => boolean
 ): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => dropWhile(iterable, predicate);
 }
