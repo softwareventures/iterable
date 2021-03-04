@@ -82,3 +82,11 @@ export function take<T>(iterable: Iterable<T>, count: number): Iterable<T> {
 export function takeFn<T>(count: number): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => take(iterable, count);
 }
+
+export function drop<T>(iterable: Iterable<T>, count: number): Iterable<T> {
+    return slice(iterable, count);
+}
+
+export function dropFn<T>(count: number): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => drop(iterable, count);
+}
