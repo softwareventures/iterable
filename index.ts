@@ -210,3 +210,16 @@ export function filterFirstFn<T>(
 ): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => filter(iterable, predicate);
 }
+
+export function exclude<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): Iterable<T> {
+    return filter(iterable, (element, index) => !predicate(element, index));
+}
+
+export function excludeFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => exclude(iterable, predicate);
+}
