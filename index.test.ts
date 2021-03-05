@@ -3,6 +3,7 @@ import {
     dropWhile,
     empty,
     filter,
+    filterFirst,
     first,
     initial,
     isIterable,
@@ -86,4 +87,8 @@ test("map", t => {
 test("filter", t => {
     t.deepEqual([1, 3], toArray(filter(generator(), e => e % 2 === 1)));
     t.deepEqual([1, 2, 5], toArray(filter([1, 3, 2, 4, 5], (_, i) => i % 2 === 0)));
+});
+
+test("filterFirst", t => {
+    t.deepEqual([1, 2, 4, 3, 2, 1], toArray(filterFirst([1, 2, 3, 4, 3, 2, 1], e => e < 3)));
 });

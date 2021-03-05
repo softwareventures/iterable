@@ -185,3 +185,28 @@ export function filterFn<T>(
 ): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => filter(iterable, predicate);
 }
+
+export function* filterFirst<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): Iterable<T> {
+    const iterator = iterable[Symbol.iterator]();
+    let i = 0;
+    let {done, value} = iterator.next();
+    while (!done && predicate(value, i)) {
+        yield value;
+        ({done, value} = iterator.next());
+        ++i;
+    }
+    ({done, value} = iterator.next());
+    while (!done) {
+        yield value;
+        ({done, value} = iterator.next());
+    }
+}
+
+export function filterFirstFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => filter(iterable, predicate);
+}
