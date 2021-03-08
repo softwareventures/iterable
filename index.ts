@@ -278,3 +278,16 @@ export function foldFn<T, U>(
 ): (iterable: Iterable<T>) => U {
     return iterable => fold(iterable, f, initial);
 }
+
+export function contains<T>(iterable: Iterable<T>, value: T): boolean {
+    for (const element of iterable) {
+        if (element === value) {
+            return true;
+        }
+    }
+    return false;
+}
+
+export function containsFn<T>(value: T): (iterable: Iterable<T>) => boolean {
+    return iterable => contains(iterable, value);
+}

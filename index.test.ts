@@ -1,5 +1,6 @@
 import test from "ava";
 import {
+    contains,
     dropWhile,
     empty,
     excludeFirst,
@@ -122,4 +123,9 @@ test("fold", t => {
         8,
         fold(generator(), (acc, e, i) => acc + e * i, 0)
     );
+});
+
+test("contains", t => {
+    t.true(contains(generator(), 1));
+    t.false(contains(generator(), 0));
 });
