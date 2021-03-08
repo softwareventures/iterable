@@ -11,6 +11,7 @@ import {
     isIterable,
     last,
     map,
+    remove,
     slice,
     tail,
     takeWhile,
@@ -104,4 +105,8 @@ test("excludeNull", t => {
 
 test("excludeFirst", t => {
     t.deepEqual([1, 2, 4, 3, 2, 1], toArray(excludeFirst([1, 2, 3, 4, 3, 2, 1], e => e > 2)));
+});
+
+test("remove", t => {
+    t.deepEqual([1, 3, 4, 3, 1], toArray(remove([1, 2, 3, 4, 3, 2, 1], 2)));
 });
