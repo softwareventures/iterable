@@ -291,3 +291,37 @@ export function contains<T>(iterable: Iterable<T>, value: T): boolean {
 export function containsFn<T>(value: T): (iterable: Iterable<T>) => boolean {
     return iterable => contains(iterable, value);
 }
+
+export function find<T, U extends T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => element is U
+): U | null;
+export function find<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): T | null;
+export function find<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): T | null {
+    let i = 0;
+    for (const element of iterable) {
+        if (predicate(element, i)) {
+            return element;
+        }
+        ++i;
+    }
+    return null;
+}
+
+export function findFn<T, U extends T>(
+    predicate: (element: T, index: number) => element is U
+): (iterable: Iterable<T>) => U | null;
+export function findFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => T | null;
+export function findFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => T | null {
+    return iterable => find(iterable, predicate);
+}

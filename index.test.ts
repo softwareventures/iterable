@@ -7,6 +7,7 @@ import {
     excludeNull,
     filter,
     filterFirst,
+    find,
     first,
     fold,
     initial,
@@ -128,4 +129,11 @@ test("fold", t => {
 test("contains", t => {
     t.true(contains(generator(), 1));
     t.false(contains(generator(), 0));
+});
+
+test("find", t => {
+    t.is(
+        3,
+        find([1, 2, 3, 4, 3, 2, 1], e => e > 2)
+    );
 });
