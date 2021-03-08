@@ -250,3 +250,11 @@ export function remove<T>(iterable: Iterable<T>, value: T): Iterable<T> {
 export function removeFn<T>(value: T): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => remove(iterable, value);
 }
+
+export function removeFirst<T>(iterable: Iterable<T>, value: T): Iterable<T> {
+    return excludeFirst(iterable, element => element === value);
+}
+
+export function removeFirstFn<T>(value: T): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => removeFirst(iterable, value);
+}

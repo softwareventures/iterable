@@ -12,6 +12,7 @@ import {
     last,
     map,
     remove,
+    removeFirst,
     slice,
     tail,
     takeWhile,
@@ -109,4 +110,8 @@ test("excludeFirst", t => {
 
 test("remove", t => {
     t.deepEqual([1, 3, 4, 3, 1], toArray(remove([1, 2, 3, 4, 3, 2, 1], 2)));
+});
+
+test("removeFirst", t => {
+    t.deepEqual([1, 3, 4, 3, 2, 1], toArray(removeFirst([1, 2, 3, 4, 3, 2, 1], 2)));
 });
