@@ -258,3 +258,23 @@ export function removeFirst<T>(iterable: Iterable<T>, value: T): Iterable<T> {
 export function removeFirstFn<T>(value: T): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => removeFirst(iterable, value);
 }
+
+export function fold<T, U>(
+    iterable: Iterable<T>,
+    f: (accumulator: U, element: T, index: number) => U,
+    initial: U
+): U {
+    let i = 0;
+    let result = initial;
+    for (const element of iterable) {
+        result = f(result, element, i++);
+    }
+    return result;
+}
+
+export function foldFn<T, U>(
+    f: (accumulator: U, element: T, index: number) => U,
+    initial: U
+): (iterable: Iterable<T>) => U {
+    return iterable => fold(iterable, f, initial);
+}

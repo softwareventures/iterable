@@ -7,6 +7,7 @@ import {
     filter,
     filterFirst,
     first,
+    fold,
     initial,
     isIterable,
     last,
@@ -114,4 +115,11 @@ test("remove", t => {
 
 test("removeFirst", t => {
     t.deepEqual([1, 3, 4, 3, 2, 1], toArray(removeFirst([1, 2, 3, 4, 3, 2, 1], 2)));
+});
+
+test("fold", t => {
+    t.is(
+        8,
+        fold(generator(), (acc, e, i) => acc + e * i, 0)
+    );
 });
