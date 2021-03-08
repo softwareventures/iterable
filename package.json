@@ -22,6 +22,7 @@
     "test": "ava"
   },
   "dependencies": {
+    "@softwareventures/nullable": "^1.0.0",
     "tslib": "2.1.0"
   },
   "devDependencies": {

@@ -314,6 +314,13 @@
     tslib "^1.11.2 || ^2.0.0"
     tslint "^6.1.2"
 
+"@softwareventures/nullable@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@softwareventures/nullable/-/nullable-1.0.0.tgz#2d380560e1ccc307721f381470cb630bd17c641b"
+  integrity sha512-QDnL/lmGbH65iHEpJuucw2srkr3WQKEoJG/5ExmK80yNY9oJ/fXzq4EX9XdjkwmafH9mre6j/TgnmXbVn9/lSQ==
+  dependencies:
+    tslib "2.1.0"
+
 "@softwareventures/prettier-config@1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@softwareventures/prettier-config/-/prettier-config-1.0.2.tgz#309a1b3509c7779be8ea78697df9fcf2cc2ca423"

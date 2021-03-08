@@ -1,3 +1,5 @@
+import {isNotNull} from "@softwareventures/nullable";
+
 export function isIterable<T = unknown>(value: Iterable<T> | unknown): value is Iterable<T> {
     return typeof value === "object" && value != null && Symbol.iterator in value;
 }
@@ -222,4 +224,8 @@ export function excludeFn<T>(
     predicate: (element: T, index: number) => boolean
 ): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => exclude(iterable, predicate);
+}
+
+export function excludeNull<T>(iterable: Iterable<T | null | undefined>): Iterable<T> {
+    return filter(iterable, isNotNull);
 }
