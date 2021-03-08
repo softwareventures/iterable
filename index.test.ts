@@ -2,6 +2,7 @@ import test from "ava";
 import {
     dropWhile,
     empty,
+    excludeFirst,
     excludeNull,
     filter,
     filterFirst,
@@ -99,4 +100,8 @@ test("excludeNull", t => {
         [1, 2, 3, 4, 3, 2, 1],
         toArray(excludeNull([1, 2, null, 3, 4, undefined, 3, 2, 1]))
     );
+});
+
+test("excludeFirst", t => {
+    t.deepEqual([1, 2, 4, 3, 2, 1], toArray(excludeFirst([1, 2, 3, 4, 3, 2, 1], e => e > 2)));
 });

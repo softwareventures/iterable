@@ -229,3 +229,16 @@ export function excludeFn<T>(
 export function excludeNull<T>(iterable: Iterable<T | null | undefined>): Iterable<T> {
     return filter(iterable, isNotNull);
 }
+
+export function excludeFirst<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): Iterable<T> {
+    return filterFirst(iterable, (element, i) => !predicate(element, i));
+}
+
+export function excludeFirstFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => excludeFirst(iterable, predicate);
+}
