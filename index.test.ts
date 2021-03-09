@@ -3,6 +3,7 @@ import {
     contains,
     dropWhile,
     empty,
+    exclude,
     excludeFirst,
     excludeNull,
     filter,
@@ -103,6 +104,10 @@ test("filter", t => {
 
 test("filterFirst", t => {
     t.deepEqual(toArray(filterFirst([1, 2, 3, 4, 3, 2, 1], e => e < 3)), [1, 2, 4, 3, 2, 1]);
+});
+
+test("exclude", t => {
+    t.deepEqual(toArray(exclude([1, 2, 3, 4, 3, 2, 1], e => e < 3)), [3, 4, 3]);
 });
 
 test("excludeNull", t => {
