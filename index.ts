@@ -447,3 +447,7 @@ export function* concat<T>(iterables: Iterable<Iterable<T>>): Iterable<T> {
 export function prepend<T>(first: Iterable<T>): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => concat([first, iterable]);
 }
+
+export function append<T>(second: Iterable<T>): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => concat([iterable, second]);
+}
