@@ -45,6 +45,7 @@ test("isIterable", t => {
 
 test("first", t => {
     t.is(1, first(generator()));
+    t.is(null, first(emptyGenerator()));
 });
 
 test("tail", t => {
