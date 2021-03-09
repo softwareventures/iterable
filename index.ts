@@ -280,6 +280,32 @@ export function foldFn<T, U>(
     return iterable => fold(iterable, f, initial);
 }
 
+export function fold1<T>(
+    iterable: Iterable<T>,
+    f: (accumulator: T, element: T, index: number) => T
+): T | null {
+    const iterator = iterable[Symbol.iterator]();
+    let {done, value} = iterator.next();
+    if (done) {
+        return null;
+    }
+    let accumulator: T = value;
+    ({done, value} = iterator.next());
+    let i = 1;
+    while (!done) {
+        accumulator = f(accumulator, value, i);
+        ({done, value} = iterator.next());
+        ++i;
+    }
+    return accumulator;
+}
+
+export function fold1Fn<T>(
+    f: (accumulator: T, element: T, index: number) => T
+): (iterable: Iterable<T>) => T | null {
+    return iterable => fold1(iterable, f);
+}
+
 export function contains<T>(iterable: Iterable<T>, value: T): boolean {
     for (const element of iterable) {
         if (element === value) {
@@ -341,18 +367,5 @@ export function maximumFn<T>(compare: Comparator<T>): (iterable: Iterable<T>) =>
 }
 
 function internalMaximum<T>(iterable: Iterable<T>, compare: Comparator<T>): T | null {
-    const iterator = iterable[Symbol.iterator]();
-    let {done, value} = iterator.next();
-    if (done) {
-        return null;
-    }
-    let result: T = value;
-    ({done, value} = iterator.next());
-    while (!done) {
-        if (compare(value, result) > 0) {
-            result = value;
-        }
-        ({done, value} = iterator.next());
-    }
-    return result;
+    return fold1(iterable, (a, e) => (compare(e, a) > 0 ? e : a));
 }

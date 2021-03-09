@@ -10,6 +10,7 @@ import {
     find,
     first,
     fold,
+    fold1,
     initial,
     isIterable,
     last,
@@ -123,7 +124,14 @@ test("removeFirst", t => {
 test("fold", t => {
     t.is(
         8,
-        fold(generator(), (acc, e, i) => acc + e * i, 0)
+        fold(generator(), (a, e, i) => a + e * i, 0)
+    );
+});
+
+test("fold1", t => {
+    t.is(
+        9,
+        fold1(generator(), (a, e, i) => a + e * i)
     );
 });
 
