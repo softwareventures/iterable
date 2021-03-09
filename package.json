@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@softwareventures/nullable": "^1.0.0",
+    "@softwareventures/ordered": "^0.2.2",
     "tslib": "2.1.0"
   },
   "devDependencies": {

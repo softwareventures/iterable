@@ -14,6 +14,7 @@ import {
     isIterable,
     last,
     map,
+    maximum,
     remove,
     removeFirst,
     slice,
@@ -136,4 +137,9 @@ test("find", t => {
         3,
         find([1, 2, 3, 4, 3, 2, 1], e => e > 2)
     );
+});
+
+test("maximum", t => {
+    t.is(3, maximum(generator()));
+    t.is(4, maximum([1, 2, 3, 4, 3, 2, 1]));
 });

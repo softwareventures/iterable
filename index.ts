@@ -1,4 +1,5 @@
 import {isNotNull} from "@softwareventures/nullable";
+import {Comparator, compare as defaultCompare} from "@softwareventures/ordered";
 
 export function isIterable<T = unknown>(value: Iterable<T> | unknown): value is Iterable<T> {
     return typeof value === "object" && value != null && Symbol.iterator in value;
@@ -324,4 +325,34 @@ export function findFn<T>(
     predicate: (element: T, index: number) => boolean
 ): (iterable: Iterable<T>) => T | null {
     return iterable => find(iterable, predicate);
+}
+
+export function maximum<T extends string | number | boolean>(iterable: Iterable<T>): T | null;
+export function maximum<T>(iterable: Iterable<T>, compare: Comparator<T>): T | null;
+export function maximum<T>(
+    iterable: Iterable<T>,
+    compare: Comparator<any> = defaultCompare
+): T | null {
+    return internalMaximum(iterable, compare);
+}
+
+export function maximumFn<T>(compare: Comparator<T>): (iterable: Iterable<T>) => T | null {
+    return iterable => internalMaximum(iterable, compare);
+}
+
+function internalMaximum<T>(iterable: Iterable<T>, compare: Comparator<T>): T | null {
+    const iterator = iterable[Symbol.iterator]();
+    let {done, value} = iterator.next();
+    if (done) {
+        return null;
+    }
+    let result: T = value;
+    ({done, value} = iterator.next());
+    while (!done) {
+        if (compare(value, result) > 0) {
+            result = value;
+        }
+        ({done, value} = iterator.next());
+    }
+    return result;
 }
