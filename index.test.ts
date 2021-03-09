@@ -51,6 +51,7 @@ test("first", t => {
 test("tail", t => {
     t.deepEqual([2, 3, 4], toArray(tail([1, 2, 3, 4])));
     t.deepEqual([2, 3], toArray(tail(generator())));
+    t.deepEqual([], toArray(tail(emptyGenerator())));
 });
 
 test("initial", t => {
