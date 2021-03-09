@@ -369,3 +369,20 @@ export function maximumFn<T>(compare: Comparator<T>): (iterable: Iterable<T>) =>
 function internalMaximum<T>(iterable: Iterable<T>, compare: Comparator<T>): T | null {
     return fold1(iterable, (a, e) => (compare(e, a) > 0 ? e : a));
 }
+
+export function minimum<T extends string | number | boolean>(iterable: Iterable<T>): T | null;
+export function minimum<T>(iterable: Iterable<T>, compare: Comparator<T>): T | null;
+export function minimum<T>(
+    iterable: Iterable<T>,
+    compare: Comparator<any> = defaultCompare
+): T | null {
+    return internalMinimum(iterable, compare);
+}
+
+export function minimumFn<T>(compare: Comparator<T>): (iterable: Iterable<T>) => T | null {
+    return iterable => internalMinimum(iterable, compare);
+}
+
+function internalMinimum<T>(iterable: Iterable<T>, compare: Comparator<T>): T | null {
+    return fold1(iterable, (a, e) => (compare(e, a) < 0 ? e : a));
+}

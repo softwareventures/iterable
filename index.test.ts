@@ -17,6 +17,7 @@ import {
     last,
     map,
     maximum,
+    minimum,
     remove,
     removeFirst,
     slice,
@@ -164,4 +165,10 @@ test("maximum", t => {
     t.is(maximum(generator()), 3);
     t.is(maximum([1, 2, 3, 4, 3, 2, 1]), 4);
     t.is(maximum(emptyGenerator()), null);
+});
+
+test("minimum", t => {
+    t.is(minimum(generator()), 1);
+    t.is(minimum([2, 3, 4, 1, 2, 3]), 1);
+    t.is(minimum(emptyGenerator()), null);
 });
