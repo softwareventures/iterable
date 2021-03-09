@@ -44,26 +44,26 @@ test("isIterable", t => {
 });
 
 test("first", t => {
-    t.is(1, first(generator()));
-    t.is(null, first(emptyGenerator()));
+    t.is(first(generator()), 1);
+    t.is(first(emptyGenerator()), null);
 });
 
 test("tail", t => {
-    t.deepEqual([2, 3, 4], toArray(tail([1, 2, 3, 4])));
-    t.deepEqual([2, 3], toArray(tail(generator())));
-    t.deepEqual([], toArray(tail(emptyGenerator())));
+    t.deepEqual(toArray(tail([1, 2, 3, 4])), [2, 3, 4]);
+    t.deepEqual(toArray(tail(generator())), [2, 3]);
+    t.deepEqual(toArray(tail(emptyGenerator())), []);
 });
 
 test("initial", t => {
-    t.deepEqual([1, 2, 3], toArray(initial([1, 2, 3, 4])));
-    t.deepEqual([1, 2], toArray(initial(generator())));
-    t.deepEqual([], toArray(initial(emptyGenerator())));
+    t.deepEqual(toArray(initial([1, 2, 3, 4])), [1, 2, 3]);
+    t.deepEqual(toArray(initial(generator())), [1, 2]);
+    t.deepEqual(toArray(initial(emptyGenerator())), []);
 });
 
 test("last", t => {
-    t.is(null, last([]));
-    t.is(3, last(generator()));
-    t.is(4, last([1, 2, 3, 4]));
+    t.is(last([]), null);
+    t.is(last(generator()), 3);
+    t.is(last([1, 2, 3, 4]), 4);
 });
 
 test("empty", t => {
@@ -74,67 +74,72 @@ test("empty", t => {
 });
 
 test("slice", t => {
-    t.deepEqual([2, 3, 4], toArray(slice([1, 2, 3, 4], 1)));
-    t.deepEqual([2, 3, 4], toArray(slice([1, 2, 3, 4, 5], 1, 4)));
-    t.deepEqual([3], toArray(slice(generator(), 2)));
-    t.deepEqual([1, 2], toArray(slice(generator(), 0, 2)));
-    t.deepEqual([], toArray(slice(emptyGenerator(), 3, 5)));
+    t.deepEqual(toArray(slice([1, 2, 3, 4], 1)), [2, 3, 4]);
+    t.deepEqual(toArray(slice([1, 2, 3, 4, 5], 1, 4)), [2, 3, 4]);
+    t.deepEqual(toArray(slice(generator(), 2)), [3]);
+    t.deepEqual(toArray(slice(generator(), 0, 2)), [1, 2]);
+    t.deepEqual(toArray(slice(emptyGenerator(), 3, 5)), []);
 });
 
 test("takeWhile", t => {
-    t.deepEqual([1, 2, 3], toArray(takeWhile([1, 2, 3, 4, 3, 2, 1], e => e < 4)));
-    t.deepEqual([1, 2], toArray(takeWhile(generator(), (_, i) => i < 2)));
+    t.deepEqual(toArray(takeWhile([1, 2, 3, 4, 3, 2, 1], e => e < 4)), [1, 2, 3]);
+    t.deepEqual(toArray(takeWhile(generator(), (_, i) => i < 2)), [1, 2]);
 });
 
 test("dropWhile", t => {
-    t.deepEqual([4, 3, 2, 1], toArray(dropWhile([1, 2, 3, 4, 3, 2, 1], e => e < 4)));
-    t.deepEqual([3], toArray(dropWhile(generator(), (_, i) => i < 2)));
+    t.deepEqual(toArray(dropWhile([1, 2, 3, 4, 3, 2, 1], e => e < 4)), [4, 3, 2, 1]);
+    t.deepEqual(toArray(dropWhile(generator(), (_, i) => i < 2)), [3]);
 });
 
 test("map", t => {
-    t.deepEqual([2, 3, 4], toArray(map(generator(), e => e + 1)));
-    t.deepEqual([1, 20, 3], toArray(map(generator(), (e, i) => (i === 1 ? e * 10 : e))));
+    t.deepEqual(toArray(map(generator(), e => e + 1)), [2, 3, 4]);
+    t.deepEqual(toArray(map(generator(), (e, i) => (i === 1 ? e * 10 : e))), [1, 20, 3]);
 });
 
 test("filter", t => {
-    t.deepEqual([1, 3], toArray(filter(generator(), e => e % 2 === 1)));
-    t.deepEqual([1, 2, 5], toArray(filter([1, 3, 2, 4, 5], (_, i) => i % 2 === 0)));
+    t.deepEqual(toArray(filter(generator(), e => e % 2 === 1)), [1, 3]);
+    t.deepEqual(toArray(filter([1, 3, 2, 4, 5], (_, i) => i % 2 === 0)), [1, 2, 5]);
 });
 
 test("filterFirst", t => {
-    t.deepEqual([1, 2, 4, 3, 2, 1], toArray(filterFirst([1, 2, 3, 4, 3, 2, 1], e => e < 3)));
+    t.deepEqual(toArray(filterFirst([1, 2, 3, 4, 3, 2, 1], e => e < 3)), [1, 2, 4, 3, 2, 1]);
 });
 
 test("excludeNull", t => {
-    t.deepEqual(
-        [1, 2, 3, 4, 3, 2, 1],
-        toArray(excludeNull([1, 2, null, 3, 4, undefined, 3, 2, 1]))
-    );
+    t.deepEqual(toArray(excludeNull([1, 2, null, 3, 4, undefined, 3, 2, 1])), [
+        1,
+        2,
+        3,
+        4,
+        3,
+        2,
+        1
+    ]);
 });
 
 test("excludeFirst", t => {
-    t.deepEqual([1, 2, 4, 3, 2, 1], toArray(excludeFirst([1, 2, 3, 4, 3, 2, 1], e => e > 2)));
+    t.deepEqual(toArray(excludeFirst([1, 2, 3, 4, 3, 2, 1], e => e > 2)), [1, 2, 4, 3, 2, 1]);
 });
 
 test("remove", t => {
-    t.deepEqual([1, 3, 4, 3, 1], toArray(remove([1, 2, 3, 4, 3, 2, 1], 2)));
+    t.deepEqual(toArray(remove([1, 2, 3, 4, 3, 2, 1], 2)), [1, 3, 4, 3, 1]);
 });
 
 test("removeFirst", t => {
-    t.deepEqual([1, 3, 4, 3, 2, 1], toArray(removeFirst([1, 2, 3, 4, 3, 2, 1], 2)));
+    t.deepEqual(toArray(removeFirst([1, 2, 3, 4, 3, 2, 1], 2)), [1, 3, 4, 3, 2, 1]);
 });
 
 test("fold", t => {
     t.is(
-        8,
-        fold(generator(), (a, e, i) => a + e * i, 0)
+        fold(generator(), (a, e, i) => a + e * i, 0),
+        8
     );
 });
 
 test("fold1", t => {
     t.is(
-        9,
-        fold1(generator(), (a, e, i) => a + e * i)
+        fold1(generator(), (a, e, i) => a + e * i),
+        9
     );
 });
 
@@ -145,12 +150,12 @@ test("contains", t => {
 
 test("find", t => {
     t.is(
-        3,
-        find([1, 2, 3, 4, 3, 2, 1], e => e > 2)
+        find([1, 2, 3, 4, 3, 2, 1], e => e > 2),
+        3
     );
 });
 
 test("maximum", t => {
-    t.is(3, maximum(generator()));
-    t.is(4, maximum([1, 2, 3, 4, 3, 2, 1]));
+    t.is(maximum(generator()), 3);
+    t.is(maximum([1, 2, 3, 4, 3, 2, 1]), 4);
 });
