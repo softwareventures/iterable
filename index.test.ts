@@ -3,6 +3,7 @@ import {
     all,
     and,
     any,
+    concat,
     contains,
     dropWhile,
     empty,
@@ -209,4 +210,9 @@ test("any", t => {
 test("all", t => {
     t.true(all(generator(), e => e < 4));
     t.false(all(generator(), e => e > 2));
+});
+
+test("concat", t => {
+    t.deepEqual(toArray(concat([[1, 2], [], [3], [4, 5]])), [1, 2, 3, 4, 5]);
+    t.deepEqual(toArray(concat([[], []])), []);
 });

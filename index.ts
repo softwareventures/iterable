@@ -435,3 +435,11 @@ export function allFn<T>(
 ): (iterable: Iterable<T>) => boolean {
     return iterable => all(iterable, predicate);
 }
+
+export function* concat<T>(iterables: Iterable<Iterable<T>>): Iterable<T> {
+    for (const iterable of iterables) {
+        for (const element of iterable) {
+            yield element;
+        }
+    }
+}
