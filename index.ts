@@ -386,3 +386,7 @@ export function minimumFn<T>(compare: Comparator<T>): (iterable: Iterable<T>) =>
 function internalMinimum<T>(iterable: Iterable<T>, compare: Comparator<T>): T | null {
     return fold1(iterable, (a, e) => (compare(e, a) < 0 ? e : a));
 }
+
+export function sum(iterable: Iterable<number>): number {
+    return fold(iterable, (a, e) => a + e, 0);
+}

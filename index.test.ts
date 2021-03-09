@@ -21,6 +21,7 @@ import {
     remove,
     removeFirst,
     slice,
+    sum,
     tail,
     takeWhile,
     toArray
@@ -171,4 +172,9 @@ test("minimum", t => {
     t.is(minimum(generator()), 1);
     t.is(minimum([2, 3, 4, 1, 2, 3]), 1);
     t.is(minimum(emptyGenerator()), null);
+});
+
+test("sum", t => {
+    t.is(sum(generator()), 6);
+    t.is(sum(emptyGenerator()), 0);
 });
