@@ -5,6 +5,7 @@ import {
     any,
     append,
     concat,
+    concatMap,
     contains,
     dropWhile,
     empty,
@@ -229,4 +230,15 @@ test("append", t => {
     t.deepEqual(toArray(append([4, 5, 6])([1, 2, 3])), [1, 2, 3, 4, 5, 6]);
     t.deepEqual(toArray(append<number>([])([1, 2, 3])), [1, 2, 3]);
     t.deepEqual(toArray(append([4, 5, 6])([])), [4, 5, 6]);
+});
+
+test("concatMap", t => {
+    t.deepEqual(toArray(concatMap(["1,2,3", "4,5,6"], s => s.split(","))), [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+    ]);
 });

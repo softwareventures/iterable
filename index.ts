@@ -451,3 +451,20 @@ export function prepend<T>(first: Iterable<T>): (iterable: Iterable<T>) => Itera
 export function append<T>(second: Iterable<T>): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => concat([iterable, second]);
 }
+
+export function* concatMap<T, U>(
+    iterable: Iterable<T>,
+    f: (element: T) => Iterable<U>
+): Iterable<U> {
+    for (const element of iterable) {
+        for (const newElement of f(element)) {
+            yield newElement;
+        }
+    }
+}
+
+export function concatMapFn<T, U>(
+    f: (element: T) => Iterable<U>
+): (iterable: Iterable<T>) => Iterable<U> {
+    return iterable => concatMap(iterable, f);
+}
