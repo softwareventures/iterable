@@ -390,3 +390,7 @@ function internalMinimum<T>(iterable: Iterable<T>, compare: Comparator<T>): T | 
 export function sum(iterable: Iterable<number>): number {
     return fold(iterable, (a, e) => a + e, 0);
 }
+
+export function product(iterable: Iterable<number>): number {
+    return fold(iterable, (a, e) => a * e, 1);
+}

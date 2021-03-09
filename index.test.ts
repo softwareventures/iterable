@@ -18,6 +18,7 @@ import {
     map,
     maximum,
     minimum,
+    product,
     remove,
     removeFirst,
     slice,
@@ -177,4 +178,9 @@ test("minimum", t => {
 test("sum", t => {
     t.is(sum(generator()), 6);
     t.is(sum(emptyGenerator()), 0);
+});
+
+test("product", t => {
+    t.is(product(generator()), 6);
+    t.is(product(emptyGenerator()), 1);
 });
