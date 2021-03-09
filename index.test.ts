@@ -23,6 +23,7 @@ import {
     maximum,
     minimum,
     or,
+    prepend,
     product,
     remove,
     removeFirst,
@@ -215,4 +216,10 @@ test("all", t => {
 test("concat", t => {
     t.deepEqual(toArray(concat([[1, 2], [], [3], [4, 5]])), [1, 2, 3, 4, 5]);
     t.deepEqual(toArray(concat([[], []])), []);
+});
+
+test("prepend", t => {
+    t.deepEqual(toArray(prepend([1, 2, 3])([4, 5, 6])), [1, 2, 3, 4, 5, 6]);
+    t.deepEqual(toArray(prepend<number>([])([4, 5, 6])), [4, 5, 6]);
+    t.deepEqual(toArray(prepend([1, 2, 3])([])), [1, 2, 3]);
 });
