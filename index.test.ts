@@ -163,4 +163,5 @@ test("find", t => {
 test("maximum", t => {
     t.is(maximum(generator()), 3);
     t.is(maximum([1, 2, 3, 4, 3, 2, 1]), 4);
+    t.is(maximum(emptyGenerator()), null);
 });
