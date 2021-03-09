@@ -399,6 +399,10 @@ export function and(iterable: Iterable<boolean>): boolean {
     return all(iterable, e => e);
 }
 
+export function or(iterable: Iterable<boolean>): boolean {
+    return any(iterable, e => e);
+}
+
 export function any<T>(
     iterable: Iterable<T>,
     predicate: (element: T, index: number) => boolean

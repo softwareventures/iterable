@@ -21,6 +21,7 @@ import {
     map,
     maximum,
     minimum,
+    or,
     product,
     remove,
     removeFirst,
@@ -192,6 +193,12 @@ test("and", t => {
     t.true(and([true, true, true]));
     t.false(and([true, false, true]));
     t.true(and(emptyGenerator()));
+});
+
+test("or", t => {
+    t.true(or([true, false, true]));
+    t.false(or([false, false, false]));
+    t.false(or([]));
 });
 
 test("any", t => {
