@@ -1,5 +1,6 @@
 import test from "ava";
 import {
+    all,
     any,
     contains,
     dropWhile,
@@ -189,4 +190,9 @@ test("product", t => {
 test("any", t => {
     t.true(any(generator(), e => e > 2));
     t.false(any(generator(), e => e > 4));
+});
+
+test("all", t => {
+    t.true(all(generator(), e => e < 4));
+    t.false(all(generator(), e => e > 2));
 });

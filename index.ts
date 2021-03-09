@@ -414,3 +414,16 @@ export function anyFn<T>(
 ): (iterable: Iterable<T>) => boolean {
     return iterable => any(iterable, predicate);
 }
+
+export function all<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): boolean {
+    return !any(iterable, (e, i) => !predicate(e, i));
+}
+
+export function allFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => boolean {
+    return iterable => all(iterable, predicate);
+}
