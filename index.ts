@@ -395,6 +395,10 @@ export function product(iterable: Iterable<number>): number {
     return fold(iterable, (a, e) => a * e, 1);
 }
 
+export function and(iterable: Iterable<boolean>): boolean {
+    return all(iterable, e => e);
+}
+
 export function any<T>(
     iterable: Iterable<T>,
     predicate: (element: T, index: number) => boolean

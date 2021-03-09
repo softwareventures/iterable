@@ -1,6 +1,7 @@
 import test from "ava";
 import {
     all,
+    and,
     any,
     contains,
     dropWhile,
@@ -185,6 +186,12 @@ test("sum", t => {
 test("product", t => {
     t.is(product(generator()), 6);
     t.is(product(emptyGenerator()), 1);
+});
+
+test("and", t => {
+    t.true(and([true, true, true]));
+    t.false(and([true, false, true]));
+    t.true(and(emptyGenerator()));
 });
 
 test("any", t => {
