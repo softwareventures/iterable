@@ -394,3 +394,23 @@ export function sum(iterable: Iterable<number>): number {
 export function product(iterable: Iterable<number>): number {
     return fold(iterable, (a, e) => a * e, 1);
 }
+
+export function any<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): boolean {
+    let i = 0;
+    for (const element of iterable) {
+        if (predicate(element, i)) {
+            return true;
+        }
+        ++i;
+    }
+    return false;
+}
+
+export function anyFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => boolean {
+    return iterable => any(iterable, predicate);
+}
