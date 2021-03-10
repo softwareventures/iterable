@@ -30,6 +30,7 @@ import {
     remove,
     removeFirst,
     scan,
+    scan1,
     slice,
     sum,
     tail,
@@ -246,4 +247,8 @@ test("concatMap", t => {
 
 test("scan", t => {
     t.deepEqual(toArray(scan(generator(), (a, e, i) => a + e * i, 0)), [0, 2, 8]);
+});
+
+test("scan1", t => {
+    t.deepEqual(toArray(scan1(generator(), (a, e, i) => a + e * i)), [1, 3, 9]);
 });

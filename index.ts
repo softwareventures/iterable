@@ -284,20 +284,11 @@ export function fold1<T>(
     iterable: Iterable<T>,
     f: (accumulator: T, element: T, index: number) => T
 ): T | null {
-    const iterator = iterable[Symbol.iterator]();
-    let {done, value} = iterator.next();
-    if (done) {
-        return null;
+    let result: T | null = null;
+    for (const element of scan1(iterable, f)) {
+        result = element;
     }
-    let accumulator: T = value;
-    ({done, value} = iterator.next());
-    let i = 1;
-    while (!done) {
-        accumulator = f(accumulator, value, i);
-        ({done, value} = iterator.next());
-        ++i;
-    }
-    return accumulator;
+    return result;
 }
 
 export function fold1Fn<T>(
@@ -486,4 +477,24 @@ export function scanFn<T, U>(
     initial: U
 ): (iterable: Iterable<T>) => Iterable<U> {
     return iterable => scan(iterable, f, initial);
+}
+
+export function* scan1<T>(
+    iterable: Iterable<T>,
+    f: (accumulator: T, element: T, index: number) => T
+): Iterable<T> {
+    const iterator = iterable[Symbol.iterator]();
+    let {done, value} = iterator.next();
+    if (done) {
+        return;
+    }
+    let accumulator: T = value;
+    yield accumulator;
+    ({done, value} = iterator.next());
+    let i = 1;
+    while (!done) {
+        yield (accumulator = f(accumulator, value, i));
+        ({done, value} = iterator.next());
+        ++i;
+    }
 }
