@@ -13,6 +13,10 @@ export function toArray<T>(iterable: Iterable<T>): T[] {
     return Array.from(iterable);
 }
 
+export function toSet<T>(iterable: Iterable<T>): Set<T> {
+    return new Set(iterable);
+}
+
 export function first<T>(iterable: Iterable<T>): T | null {
     const iterator = iterable[Symbol.iterator]();
     const {done, value} = iterator.next();
