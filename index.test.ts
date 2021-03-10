@@ -26,6 +26,7 @@ import {
     minimum,
     or,
     partition,
+    partitionWhile,
     prepend,
     product,
     remove,
@@ -282,6 +283,7 @@ test("partition", t => {
             [2, 4, 6]
         ]
     );
+
     const partitions = partition([2, 1, 3, 4, 5, 6], e => e % 2 === 1);
     t.is(first(partitions[0]), 1);
     t.deepEqual(toArray(partitions[1]), [2, 4, 6]);
@@ -312,4 +314,50 @@ test("partition", t => {
         {type: "success", value: "goodbye"}
     ]);
     t.deepEqual(toArray(partitionedResults[1]), [{type: "error"}]);
+});
+
+test("partitionWhile", t => {
+    t.deepEqual(
+        toArray(
+            map(
+                partitionWhile([1, 3, 2, 4, 5, 6], e => e % 2 === 1),
+                toArray
+            )
+        ),
+        [
+            [1, 3],
+            [2, 4, 5, 6]
+        ]
+    );
+
+    const partitions = partitionWhile([1, 3, 2, 4, 5, 6], e => e % 2 === 1);
+    t.is(first(partitions[0]), 1);
+    t.deepEqual(toArray(partitions[1]), [2, 4, 5, 6]);
+
+    t.deepEqual(
+        toArray(
+            map(
+                partitionWhile(["abc", "def", "ghi"], (_: string, i: number) => i % 2 === 0),
+                toArray
+            )
+        ),
+        [["abc"], ["def", "ghi"]]
+    );
+
+    const results: Array<Result<string>> = [
+        {type: "success", value: "hello"},
+        {type: "error"},
+        {type: "success", value: "goodbye"}
+    ];
+
+    const partitionedResults: [
+        Iterable<Success<string>>,
+        Iterable<Result<string>>
+    ] = partitionWhile(results, isSuccess);
+
+    t.deepEqual(toArray(partitionedResults[0]), [{type: "success", value: "hello"}]);
+    t.deepEqual(toArray(partitionedResults[1]), [
+        {type: "error"},
+        {type: "success", value: "goodbye"}
+    ]);
 });

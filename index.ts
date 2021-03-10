@@ -556,3 +556,59 @@ export function partitionFn<T>(
 ): (iterable: Iterable<T>) => [Iterable<T>, Iterable<T>] {
     return iterable => partition(iterable, predicate);
 }
+
+export function partitionWhile<T, U extends T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => element is U
+): [Iterable<U>, Iterable<T>];
+export function partitionWhile<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): [Iterable<T>, Iterable<T>];
+export function partitionWhile<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): [Iterable<T>, Iterable<T>] {
+    const iterator = iterable[Symbol.iterator]();
+    const left: T[] = [];
+    const right: T[] = [];
+    let i = 0;
+
+    function* internal(side: T[]): Iterable<T> {
+        for (const element of side) {
+            yield element;
+        }
+        let {done, value} = iterator.next();
+        while (right.length === 0 && !done) {
+            const valueSide = predicate(value, i) ? left : right;
+            valueSide.push(value);
+            if (valueSide === side) {
+                yield value;
+            }
+            if (valueSide === right && side === left) {
+                return;
+            }
+            ({done, value} = iterator.next());
+            ++i;
+        }
+        while (!done) {
+            right.push(value);
+            yield value;
+            ({done, value} = iterator.next());
+        }
+    }
+
+    return [internal(left), internal(right)];
+}
+
+export function partitionWhileFn<T, U extends T>(
+    predicate: (element: T, index: number) => element is U
+): (iterable: Iterable<T>) => [Iterable<U>, Iterable<T>];
+export function partitionWhileFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => [Iterable<T>, Iterable<T>];
+export function partitionWhileFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => [Iterable<T>, Iterable<T>] {
+    return iterable => partitionWhile(iterable, predicate);
+}
