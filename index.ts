@@ -508,3 +508,51 @@ export function scan1Fn<T>(
 ): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => scan1(iterable, f);
 }
+
+export function partition<T, U extends T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => element is U
+): [Iterable<U>, Iterable<Exclude<T, U>>];
+export function partition<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): [Iterable<T>, Iterable<T>];
+export function partition<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): [Iterable<T>, Iterable<T>] {
+    const iterator = iterable[Symbol.iterator]();
+    const left: T[] = [];
+    const right: T[] = [];
+    let i = 0;
+
+    function* internal(side: T[]): Iterable<T> {
+        for (const element of side) {
+            yield element;
+        }
+        let {done, value} = iterator.next();
+        while (!done) {
+            const valueSide = predicate(value, i) ? left : right;
+            valueSide.push(value);
+            if (valueSide === side) {
+                yield value;
+            }
+            ({done, value} = iterator.next());
+            ++i;
+        }
+    }
+
+    return [internal(left), internal(right)];
+}
+
+export function partitionFn<T, U extends T>(
+    predicate: (element: T, index: number) => element is U
+): (iterable: Iterable<T>) => [Iterable<U>, Iterable<Exclude<T, U>>];
+export function partitionFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => [Iterable<T>, Iterable<T>];
+export function partitionFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => [Iterable<T>, Iterable<T>] {
+    return iterable => partition(iterable, predicate);
+}
