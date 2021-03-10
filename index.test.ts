@@ -254,6 +254,21 @@ test("scan1", t => {
     t.deepEqual(toArray(scan1(generator(), (a, e, i) => a + e * i)), [1, 3, 9]);
 });
 
+type Result<T> = Success<T> | Error;
+
+interface Success<T> {
+    type: "success";
+    value: T;
+}
+
+interface Error {
+    type: "error";
+}
+
+function isSuccess<T>(result: Result<T>): result is Success<T> {
+    return result.type === "success";
+}
+
 test("partition", t => {
     t.deepEqual(
         toArray(
@@ -270,4 +285,31 @@ test("partition", t => {
     const partitions = partition([2, 1, 3, 4, 5, 6], e => e % 2 === 1);
     t.is(first(partitions[0]), 1);
     t.deepEqual(toArray(partitions[1]), [2, 4, 6]);
+
+    t.deepEqual(
+        toArray(
+            map(
+                partition(["abc", "def", "ghi"], (_: string, i: number) => i % 2 === 0),
+                toArray
+            )
+        ),
+        [["abc", "ghi"], ["def"]]
+    );
+
+    const results: Array<Result<string>> = [
+        {type: "success", value: "hello"},
+        {type: "error"},
+        {type: "success", value: "goodbye"}
+    ];
+
+    const partitionedResults: [Iterable<Success<string>>, Iterable<Error>] = partition(
+        results,
+        isSuccess
+    );
+
+    t.deepEqual(toArray(partitionedResults[0]), [
+        {type: "success", value: "hello"},
+        {type: "success", value: "goodbye"}
+    ]);
+    t.deepEqual(toArray(partitionedResults[1]), [{type: "error"}]);
 });
