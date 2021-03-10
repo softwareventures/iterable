@@ -468,3 +468,22 @@ export function concatMapFn<T, U>(
 ): (iterable: Iterable<T>) => Iterable<U> {
     return iterable => concatMap(iterable, f);
 }
+
+export function* scan<T, U>(
+    iterable: Iterable<T>,
+    f: (accumulator: U, element: T, index: number) => U,
+    initial: U
+): Iterable<U> {
+    let a = initial;
+    let i = 0;
+    for (const element of iterable) {
+        yield (a = f(a, element, i++));
+    }
+}
+
+export function scanFn<T, U>(
+    f: (accumulator: U, element: T, index: number) => U,
+    initial: U
+): (iterable: Iterable<T>) => Iterable<U> {
+    return iterable => scan(iterable, f, initial);
+}
