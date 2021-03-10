@@ -498,3 +498,9 @@ export function* scan1<T>(
         ++i;
     }
 }
+
+export function scan1Fn<T>(
+    f: (accumulator: T, element: T, index: number) => T
+): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => scan1(iterable, f);
+}
