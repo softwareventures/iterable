@@ -612,3 +612,25 @@ export function partitionWhileFn<T>(
 ): (iterable: Iterable<T>) => [Iterable<T>, Iterable<T>] {
     return iterable => partitionWhile(iterable, predicate);
 }
+
+export function keyBy<TKey, TElement>(
+    iterable: Iterable<TElement>,
+    f: (element: TElement) => TKey
+): Map<TKey, TElement[]> {
+    const map = new Map<TKey, TElement[]>();
+    for (const element of iterable) {
+        const key = f(element);
+        const elements = map.get(key) ?? [];
+        if (!map.has(key)) {
+            map.set(key, elements);
+        }
+        elements.push(element);
+    }
+    return map;
+}
+
+export function keyByFn<TKey, TElement>(
+    f: (element: TElement) => TKey
+): (iterable: Iterable<TElement>) => Map<TKey, TElement[]> {
+    return iterable => keyBy(iterable, f);
+}
