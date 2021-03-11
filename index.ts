@@ -654,3 +654,21 @@ export function keyFirstByFn<TKey, TElement>(
 ): (iterable: Iterable<TElement>) => Map<TKey, TElement> {
     return iterable => keyFirstBy(iterable, f);
 }
+
+export function keyLastBy<TKey, TElement>(
+    iterable: Iterable<TElement>,
+    f: (element: TElement) => TKey
+): Map<TKey, TElement> {
+    const map = new Map<TKey, TElement>();
+    for (const element of iterable) {
+        const key = f(element);
+        map.set(key, element);
+    }
+    return map;
+}
+
+export function keyLastByFn<TKey, TElement>(
+    f: (element: TElement) => TKey
+): (iterable: Iterable<TElement>) => Map<TKey, TElement> {
+    return iterable => keyLastBy(iterable, f);
+}
