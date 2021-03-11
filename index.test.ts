@@ -25,6 +25,7 @@ import {
     keyLastBy,
     last,
     map,
+    mapKeyBy,
     maximum,
     minimum,
     or,
@@ -383,5 +384,12 @@ test("keyLastBy", t => {
     const map = keyLastBy([1, 3, 4, 2, 5, 6], e => (e % 2 === 0 ? "even" : "odd"));
     t.is(map.get("even"), 6);
     t.is(map.get("odd"), 5);
+    t.deepEqual(toArray(map.keys()), ["odd", "even"]);
+});
+
+test("mapKeyBy", t => {
+    const map = mapKeyBy([1, 3, 4, 2, 5, 6], e => [e % 2 === 0 ? "even" : "odd", String(e)]);
+    t.deepEqual(map.get("even"), ["4", "2", "6"]);
+    t.deepEqual(map.get("odd"), ["1", "3", "5"]);
     t.deepEqual(toArray(map.keys()), ["odd", "even"]);
 });
