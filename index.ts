@@ -634,3 +634,23 @@ export function keyByFn<TKey, TElement>(
 ): (iterable: Iterable<TElement>) => Map<TKey, TElement[]> {
     return iterable => keyBy(iterable, f);
 }
+
+export function keyFirstBy<TKey, TElement>(
+    iterable: Iterable<TElement>,
+    f: (element: TElement) => TKey
+): Map<TKey, TElement> {
+    const map = new Map<TKey, TElement>();
+    for (const element of iterable) {
+        const key = f(element);
+        if (!map.has(key)) {
+            map.set(key, element);
+        }
+    }
+    return map;
+}
+
+export function keyFirstByFn<TKey, TElement>(
+    f: (element: TElement) => TKey
+): (iterable: Iterable<TElement>) => Map<TKey, TElement> {
+    return iterable => keyFirstBy(iterable, f);
+}
