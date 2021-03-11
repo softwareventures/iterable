@@ -694,3 +694,23 @@ export function mapKeyByFn<TKey, TElement, TNewElement>(
 ): (iterable: Iterable<TElement>) => Map<TKey, TNewElement[]> {
     return iterable => mapKeyBy(iterable, f);
 }
+
+export function mapKeyFirstBy<TKey, TElement, TNewElement>(
+    iterable: Iterable<TElement>,
+    f: (element: TElement) => [TKey, TNewElement]
+): Map<TKey, TNewElement> {
+    const map = new Map<TKey, TNewElement>();
+    for (const element of iterable) {
+        const [key, value] = f(element);
+        if (!map.has(key)) {
+            map.set(key, value);
+        }
+    }
+    return map;
+}
+
+export function mapKeyFirstByFn<TKey, TElement, TNewElement>(
+    f: (element: TElement) => [TKey, TNewElement]
+): (iterable: Iterable<TElement>) => Map<TKey, TNewElement> {
+    return iterable => mapKeyFirstBy(iterable, f);
+}
