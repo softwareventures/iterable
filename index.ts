@@ -680,22 +680,24 @@ export function keyLastByFn<TKey, TElement>(
 
 export function mapKeyBy<TKey, TElement, TNewElement>(
     iterable: Iterable<TElement>,
-    f: (element: TElement) => [TKey, TNewElement]
+    f: (element: TElement, index: number) => [TKey, TNewElement]
 ): Map<TKey, TNewElement[]> {
     const map = new Map<TKey, TNewElement[]>();
+    let i = 0;
     for (const element of iterable) {
-        const [key, value] = f(element);
+        const [key, value] = f(element, i);
         const values = map.get(key) ?? [];
         if (!map.has(key)) {
             map.set(key, values);
         }
         values.push(value);
+        ++i;
     }
     return map;
 }
 
 export function mapKeyByFn<TKey, TElement, TNewElement>(
-    f: (element: TElement) => [TKey, TNewElement]
+    f: (element: TElement, index: number) => [TKey, TNewElement]
 ): (iterable: Iterable<TElement>) => Map<TKey, TNewElement[]> {
     return iterable => mapKeyBy(iterable, f);
 }
