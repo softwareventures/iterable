@@ -704,20 +704,22 @@ export function mapKeyByFn<TKey, TElement, TNewElement>(
 
 export function mapKeyFirstBy<TKey, TElement, TNewElement>(
     iterable: Iterable<TElement>,
-    f: (element: TElement) => [TKey, TNewElement]
+    f: (element: TElement, index: number) => [TKey, TNewElement]
 ): Map<TKey, TNewElement> {
     const map = new Map<TKey, TNewElement>();
+    let i = 0;
     for (const element of iterable) {
-        const [key, value] = f(element);
+        const [key, value] = f(element, i);
         if (!map.has(key)) {
             map.set(key, value);
         }
+        ++i;
     }
     return map;
 }
 
 export function mapKeyFirstByFn<TKey, TElement, TNewElement>(
-    f: (element: TElement) => [TKey, TNewElement]
+    f: (element: TElement, index: number) => [TKey, TNewElement]
 ): (iterable: Iterable<TElement>) => Map<TKey, TNewElement> {
     return iterable => mapKeyFirstBy(iterable, f);
 }
