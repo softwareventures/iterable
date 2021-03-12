@@ -2,7 +2,12 @@ import {isNotNull} from "@softwareventures/nullable";
 import {Comparator, compare as defaultCompare} from "@softwareventures/ordered";
 
 export function isIterable<T = unknown>(value: Iterable<T> | unknown): value is Iterable<T> {
-    return typeof value === "object" && value != null && Symbol.iterator in value;
+    return (
+        typeof value === "object" &&
+        value != null &&
+        Symbol.iterator in value &&
+        typeof (value as {[Symbol.iterator]: unknown})[Symbol.iterator] === "function"
+    );
 }
 
 export function iterator<T>(iterable: Iterable<T>): Iterator<T> {
