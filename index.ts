@@ -1,7 +1,7 @@
 import {isNotNull} from "@softwareventures/nullable";
 import {Comparator, compare as defaultCompare} from "@softwareventures/ordered";
 
-export function isIterable<T = unknown>(value: Iterable<T> | unknown): value is Iterable<T> {
+export function isIterable<T>(value: Iterable<T> | {} | null | undefined): value is Iterable<T> {
     return (
         typeof value === "object" &&
         value != null &&

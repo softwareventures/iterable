@@ -1,4 +1,5 @@
 import test from "ava";
+import {expectType} from "ts-expect";
 import {
     all,
     and,
@@ -63,6 +64,16 @@ test("isIterable", t => {
     t.false(isIterable({a: 1, b: 2}));
     t.true(isIterable([1, 2, 3]));
     t.true(isIterable(generator()));
+
+    const unknown1: number[] | {} = [1, 2, 3];
+    if (isIterable(unknown1)) {
+        expectType<Iterable<number>>(unknown1);
+    }
+
+    const unknown2: {} = [1, 2, 3];
+    if (isIterable(unknown2)) {
+        expectType<Iterable<unknown>>(unknown2);
+    }
 });
 
 test("first", t => {
