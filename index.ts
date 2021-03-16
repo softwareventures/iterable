@@ -36,6 +36,17 @@ export function tail<T>(iterable: Iterable<T>): Iterable<T> {
     return slice(iterable, 1);
 }
 
+export function* push<T>(iterable: Iterable<T>, value: T): Iterable<T> {
+    for (const element of iterable) {
+        yield element;
+    }
+    yield value;
+}
+
+export function pushFn<T>(value: T): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => push(iterable, value);
+}
+
 export function* initial<T>(iterable: Iterable<T>): Iterable<T> {
     const iterator = iterable[Symbol.iterator]();
     let {done, value} = iterator.next();

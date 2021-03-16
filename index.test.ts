@@ -36,6 +36,7 @@ import {
     partitionWhile,
     prepend,
     product,
+    push,
     remove,
     removeFirst,
     scan,
@@ -85,6 +86,10 @@ test("tail", t => {
     t.deepEqual(toArray(tail([1, 2, 3, 4])), [2, 3, 4]);
     t.deepEqual(toArray(tail(generator())), [2, 3]);
     t.deepEqual(toArray(tail(emptyGenerator())), []);
+});
+
+test("push", t => {
+    t.deepEqual(toArray(push(generator(), 4)), [1, 2, 3, 4]);
 });
 
 test("initial", t => {
