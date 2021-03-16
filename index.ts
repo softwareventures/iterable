@@ -47,6 +47,17 @@ export function pushFn<T>(value: T): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => push(iterable, value);
 }
 
+export function* unshift<T>(iterable: Iterable<T>, value: T): Iterable<T> {
+    yield value;
+    for (const element of iterable) {
+        yield element;
+    }
+}
+
+export function unshiftFn<T>(value: T): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => unshift(iterable, value);
+}
+
 export function* initial<T>(iterable: Iterable<T>): Iterable<T> {
     const iterator = iterable[Symbol.iterator]();
     let {done, value} = iterator.next();

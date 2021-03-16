@@ -45,7 +45,8 @@ import {
     sum,
     tail,
     takeWhile,
-    toArray
+    toArray,
+    unshift
 } from "./index";
 
 function* generator(): Iterable<number> {
@@ -90,6 +91,10 @@ test("tail", t => {
 
 test("push", t => {
     t.deepEqual(toArray(push(generator(), 4)), [1, 2, 3, 4]);
+});
+
+test("unshift", t => {
+    t.deepEqual(toArray(unshift(generator(), 4)), [4, 1, 2, 3]);
 });
 
 test("initial", t => {
