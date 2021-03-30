@@ -20,6 +20,7 @@
     "semantic-release": "semantic-release",
     "test": "ava"
   },
+  "sideEffects": false,
   "dependencies": {
     "@softwareventures/nullable": "^1.0.0",
     "@softwareventures/ordered": "^0.2.2",
