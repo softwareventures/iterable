@@ -22,7 +22,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@softwareventures/nullable": "^1.0.0",
+    "@softwareventures/nullable": "^1.0.0 || ^1.2.1",
     "@softwareventures/ordered": "^0.2.2",
     "tslib": "2.2.0"
   },
