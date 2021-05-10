@@ -536,6 +536,53 @@ export function scan1Fn<T>(
     return iterable => scan1(iterable, f);
 }
 
+/** Splits the Iterable at the specified index.
+ *
+ * Returns a tuple where the first element is the first `index` elements of the
+ * Iterable, and the second element is the remaining elements of the Iterable. */
+export function split<T>(iterable: Iterable<T>, index: number): [Iterable<T>, Iterable<T>] {
+    const iterator = iterable[Symbol.iterator]();
+    const left: T[] = [];
+    const right: T[] = [];
+
+    function* internal(side: T[]): Iterable<T> {
+        for (const element of side) {
+            yield element;
+        }
+        let {done, value} = iterator.next();
+        while (!done && left.length < index) {
+            left.push(value);
+            if (side === left) {
+                yield value;
+            }
+            ({done, value} = iterator.next());
+        }
+        if (done) {
+            return;
+        }
+        right.push(value);
+        if (side === left) {
+            return;
+        }
+        yield value;
+        ({done, value} = iterator.next());
+        while (!done) {
+            right.push(value);
+            yield value;
+            ({done, value} = iterator.next());
+        }
+    }
+
+    return [internal(left), internal(right)];
+}
+
+/** Returns a function that splits an Iterable at the specified index.
+ *
+ * This is the curried form of {@link split}. */
+export function splitFn<T>(index: number): (iterable: Iterable<T>) => [Iterable<T>, Iterable<T>] {
+    return iterable => split(iterable, index);
+}
+
 export function partition<T, U extends T>(
     iterable: Iterable<T>,
     predicate: (element: T, index: number) => element is U

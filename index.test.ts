@@ -42,6 +42,7 @@ import {
     scan,
     scan1,
     slice,
+    split,
     sum,
     tail,
     takeWhile,
@@ -275,6 +276,16 @@ test("scan", t => {
 
 test("scan1", t => {
     t.deepEqual(toArray(scan1(generator(), (a, e, i) => a + e * i)), [1, 3, 9]);
+});
+
+test("split", t => {
+    t.deepEqual(toArray(map(split(generator(), 2), toArray)), [[1, 2], [3]]);
+    t.deepEqual(toArray(map(split([2, 1, 3, 4, 5, 6], 2), toArray)), [
+        [2, 1],
+        [3, 4, 5, 6]
+    ]);
+    t.deepEqual(toArray(map(split([2, 1, 3, 4, 5, 6], 0), toArray)), [[], [2, 1, 3, 4, 5, 6]]);
+    t.deepEqual(toArray(map(split([2, 1, 3, 4, 5, 6], 10), toArray)), [[2, 1, 3, 4, 5, 6], []]);
 });
 
 type Result<T> = Success<T> | Error;
