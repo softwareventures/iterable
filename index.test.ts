@@ -153,15 +153,10 @@ test("exclude", t => {
 });
 
 test("excludeNull", t => {
-    t.deepEqual(toArray(excludeNull([1, 2, null, 3, 4, undefined, 3, 2, 1])), [
-        1,
-        2,
-        3,
-        4,
-        3,
-        2,
-        1
-    ]);
+    t.deepEqual(
+        toArray(excludeNull([1, 2, null, 3, 4, undefined, 3, 2, 1])),
+        [1, 2, 3, 4, 3, 2, 1]
+    );
 });
 
 test("excludeFirst", t => {
@@ -377,10 +372,8 @@ test("partitionWhile", t => {
         {type: "success", value: "goodbye"}
     ];
 
-    const partitionedResults: [
-        Iterable<Success<string>>,
-        Iterable<Result<string>>
-    ] = partitionWhile(results, isSuccess);
+    const partitionedResults: [Iterable<Success<string>>, Iterable<Result<string>>] =
+        partitionWhile(results, isSuccess);
 
     t.deepEqual(toArray(partitionedResults[0]), [{type: "success", value: "hello"}]);
     t.deepEqual(toArray(partitionedResults[1]), [
