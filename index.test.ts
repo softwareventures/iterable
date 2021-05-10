@@ -47,7 +47,8 @@ import {
     tail,
     takeWhile,
     toArray,
-    unshift
+    unshift,
+    zip
 } from "./index";
 
 function* generator(): Iterable<number> {
@@ -390,6 +391,14 @@ test("partitionWhile", t => {
     t.deepEqual(toArray(partitionedResults[1]), [
         {type: "error"},
         {type: "success", value: "goodbye"}
+    ]);
+});
+
+test("zip", t => {
+    t.deepEqual(toArray(zip(generator(), [6, 5, 4, 3, 2, 1])), [
+        [1, 6],
+        [2, 5],
+        [3, 4]
     ]);
 });
 

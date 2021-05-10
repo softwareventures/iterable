@@ -687,6 +687,34 @@ export function partitionWhileFn<T>(
     return iterable => partitionWhile(iterable, predicate);
 }
 
+/** Takes two Iterables and returns an Iterable of corresponding pairs.
+ *
+ * If one of the supplied Iterables is shorter than the other, then the excess
+ * elements of the longer Iterable will be discarded. */
+export function* zip<T, U>(a: Iterable<T>, b: Iterable<U>): Iterable<[T, U]> {
+    const ai = a[Symbol.iterator]();
+    const bi = b[Symbol.iterator]();
+
+    let an = ai.next();
+    let bn = bi.next();
+    while (!an.done && !bn.done) {
+        yield [an.value, bn.value];
+        an = ai.next();
+        bn = bi.next();
+    }
+}
+
+/** Returns a function that combines the elements of `a` with the elements of
+ * `b` and returns an Iterable of corresponding pairs.
+ *
+ * If one of the supplied Iterables is shorter than the other, then the excess
+ * elements of the longer Iterable will be discarded.
+ *
+ * This is the curried variant of {@link zip}. */
+export function zipFn<T, U>(b: Iterable<U>): (a: Iterable<T>) => Iterable<[T, U]> {
+    return a => zip(a, b);
+}
+
 export function keyBy<TKey, TElement>(
     iterable: Iterable<TElement>,
     f: (element: TElement) => TKey
