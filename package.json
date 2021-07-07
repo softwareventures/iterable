@@ -3,10 +3,10 @@
   "version": "0.0.0-development",
   "description": "Pure functional Iterable traversal",
   "keywords": [
-    "lambda",
+    "Iterable",
     "TypeScript",
     "functional",
-    "Iterable"
+    "lambda"
   ],
   "author": "Daniel Cassidy <mail@danielcassidy.me.uk>",
   "homepage": "https://github.com/softwareventures/iterable",
