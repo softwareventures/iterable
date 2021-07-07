@@ -476,10 +476,10 @@
   dependencies:
     tslib "2.2.0"
 
-"@softwareventures/ordered@^0.2.2":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@softwareventures/ordered/-/ordered-0.2.4.tgz#f2ac71ea6db811ba0da249f1cee67ed204382b0d"
-  integrity sha512-hbR74lJsfF9g7m6aQKJC7jBofwvT71laRXvTLXnNo+MbtQXyu7t40vRmPssv6ebaG0r2kuw5sYPyr/hknqNWRg==
+"@softwareventures/ordered@^0.2.2 || ^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@softwareventures/ordered/-/ordered-1.0.0.tgz#d803eef43bb0b4ccfcd78d2928fe38b5109ad99e"
+  integrity sha512-SUFUYDWEPAS54LpGH+mRHwkGuTINPDt4OOS3h/Zr9f12JPFz2cqh6Xxwg75BZqwaeONuUwmklJVMRmgvxSSkPA==
   dependencies:
     tslib "^1.9.3 || ^2.0.0 || ^2.1.0"
 
