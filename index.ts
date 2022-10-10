@@ -84,6 +84,12 @@ export function last<T>(iterable: Iterable<T>): T | null {
     return result;
 }
 
+export function only<T>(iterable: Iterable<T>): T | null {
+    const iterator = iterable[Symbol.iterator]();
+    const first = iterator.next();
+    return (!first.done ?? false) && (iterator.next().done ?? false) ? first.value : null;
+}
+
 export function empty(iterable: Iterable<unknown>): boolean {
     return iterable[Symbol.iterator]().next().done ?? false;
 }
