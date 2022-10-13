@@ -261,29 +261,11 @@ export function filterFn<T>(
 
 /** @deprecated This function is confusing, use {@link excludeFirst} instead,
  * and invert the predicate. */
-export function* filterFirst<T>(
+export function filterFirst<T>(
     iterable: Iterable<T>,
     predicate: (element: T, index: number) => boolean
 ): Iterable<T> {
-    const iterator = iterable[Symbol.iterator]();
-    let element = iterator.next();
-
-    for (let i = 0; element.done !== true; ++i) {
-        if (predicate(element.value, i)) {
-            break;
-        }
-        yield element.value;
-        element = iterator.next();
-    }
-
-    if (element.done !== true) {
-        element = iterator.next();
-    }
-
-    while (element.done !== true) {
-        yield element.value;
-        element = iterator.next();
-    }
+    return excludeFirst(iterable, (element, index) => !predicate(element, index));
 }
 
 /** @deprecated This function is confusing, use {@link excludeFirstFn} instead,
@@ -311,11 +293,29 @@ export function excludeNull<T>(iterable: Iterable<T | null | undefined>): Iterab
     return filter(iterable, isNotNull);
 }
 
-export function excludeFirst<T>(
+export function* excludeFirst<T>(
     iterable: Iterable<T>,
     predicate: (element: T, index: number) => boolean
 ): Iterable<T> {
-    return filterFirst(iterable, (element, i) => !predicate(element, i));
+    const iterator = iterable[Symbol.iterator]();
+    let element = iterator.next();
+
+    for (let i = 0; element.done !== true; ++i) {
+        if (predicate(element.value, i)) {
+            break;
+        }
+        yield element.value;
+        element = iterator.next();
+    }
+
+    if (element.done !== true) {
+        element = iterator.next();
+    }
+
+    while (element.done !== true) {
+        yield element.value;
+        element = iterator.next();
+    }
 }
 
 export function excludeFirstFn<T>(
