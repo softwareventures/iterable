@@ -70,11 +70,13 @@ test("isIterable", t => {
     t.true(isIterable([1, 2, 3]));
     t.true(isIterable(generator()));
 
+    // eslint-disable-next-line @typescript-eslint/ban-types
     const unknown1: number[] | {} = [1, 2, 3];
     if (isIterable(unknown1)) {
         expectType<Iterable<number>>(unknown1);
     }
 
+    // eslint-disable-next-line @typescript-eslint/ban-types
     const unknown2: {} = [1, 2, 3];
     if (isIterable(unknown2)) {
         expectType<Iterable<unknown>>(unknown2);

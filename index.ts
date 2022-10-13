@@ -1,6 +1,8 @@
 import {isNotNull} from "@softwareventures/nullable";
-import {Comparator, compare as defaultCompare} from "@softwareventures/ordered";
+import type {Comparator} from "@softwareventures/ordered";
+import {compare as defaultCompare} from "@softwareventures/ordered";
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function isIterable<T>(value: Iterable<T> | {} | null | undefined): value is Iterable<T> {
     return (
         typeof value === "object" &&
@@ -23,13 +25,10 @@ export function toSet<T>(iterable: Iterable<T>): Set<T> {
 }
 
 export function first<T>(iterable: Iterable<T>): T | null {
-    const iterator = iterable[Symbol.iterator]();
-    const {done, value} = iterator.next();
-    if (done) {
-        return null;
-    } else {
-        return value;
+    for (const element of iterable) {
+        return element;
     }
+    return null;
 }
 
 export function tail<T>(iterable: Iterable<T>): Iterable<T> {
@@ -60,34 +59,30 @@ export function unshiftFn<T>(value: T): (iterable: Iterable<T>) => Iterable<T> {
 
 export function* initial<T>(iterable: Iterable<T>): Iterable<T> {
     const iterator = iterable[Symbol.iterator]();
-    let {done, value} = iterator.next();
-    let nextValue: T | null = null;
-    if (!done) {
-        ({done, value: nextValue} = iterator.next());
-    }
-    while (!done) {
-        yield value;
-        value = nextValue;
-        ({done, value: nextValue} = iterator.next());
+    let prev = iterator.next();
+    let element = prev.done === true ? prev : iterator.next();
+
+    while (element.done !== true) {
+        yield prev.value;
+        prev = element;
+        element = iterator.next();
     }
 }
 
 export function last<T>(iterable: Iterable<T>): T | null {
-    const iterator = iterable[Symbol.iterator]();
-    let done: boolean | undefined = false;
-    let result: T | null = null;
-    let value: T | null = null;
-    while (!done) {
-        result = value;
-        ({done, value} = iterator.next());
+    let last: T | null = null;
+
+    for (const element of iterable) {
+        last = element;
     }
-    return result;
+
+    return last;
 }
 
 export function only<T>(iterable: Iterable<T>): T | null {
     const iterator = iterable[Symbol.iterator]();
     const first = iterator.next();
-    return (!first.done ?? false) && (iterator.next().done ?? false) ? first.value : null;
+    return !(first.done ?? false) && (iterator.next().done ?? false) ? first.value : null;
 }
 
 export function empty(iterable: Iterable<unknown>): boolean {
@@ -102,16 +97,16 @@ export function* slice<T>(iterable: Iterable<T>, start = 0, end = Infinity): Ite
     const iterator = iterable[Symbol.iterator]();
     for (let i = 0; i < start; ++i) {
         const {done} = iterator.next();
-        if (done) {
+        if (done === true) {
             return;
         }
     }
     for (let i = start; i < end; ++i) {
-        const {done, value} = iterator.next();
-        if (done) {
+        const element = iterator.next();
+        if (element.done === true) {
             return;
         }
-        yield value;
+        yield element.value;
     }
 }
 
@@ -147,13 +142,12 @@ export function* takeWhile<T>(
     iterable: Iterable<T>,
     predicate: (element: T, index: number) => boolean
 ): Iterable<T> {
-    const iterator = iterable[Symbol.iterator]();
-    let {done, value} = iterator.next();
     let i = 0;
-    while (!done && predicate(value, i)) {
-        yield value;
-        ({done, value} = iterator.next());
-        ++i;
+    for (const element of iterable) {
+        if (!predicate(element, i++)) {
+            return;
+        }
+        yield element;
     }
 }
 
@@ -187,15 +181,14 @@ export function* dropWhile<T>(
     predicate: (element: T, index: number) => boolean
 ): Iterable<T> {
     const iterator = iterable[Symbol.iterator]();
-    let {done, value} = iterator.next();
-    let i = 0;
-    while (!done && predicate(value, i)) {
-        ({done, value} = iterator.next());
-        ++i;
+    let element = iterator.next();
+    for (let i = 0; element.done !== true && predicate(element.value, i); ++i) {
+        element = iterator.next();
     }
-    while (!done) {
-        yield value;
-        ({done, value} = iterator.next());
+
+    while (element.done !== true) {
+        yield element.value;
+        element = iterator.next();
     }
 }
 
@@ -273,17 +266,23 @@ export function* filterFirst<T>(
     predicate: (element: T, index: number) => boolean
 ): Iterable<T> {
     const iterator = iterable[Symbol.iterator]();
-    let i = 0;
-    let {done, value} = iterator.next();
-    while (!done && predicate(value, i)) {
-        yield value;
-        ({done, value} = iterator.next());
-        ++i;
+    let element = iterator.next();
+
+    for (let i = 0; element.done !== true; ++i) {
+        if (predicate(element.value, i)) {
+            break;
+        }
+        yield element.value;
+        element = iterator.next();
     }
-    ({done, value} = iterator.next());
-    while (!done) {
-        yield value;
-        ({done, value} = iterator.next());
+
+    if (element.done !== true) {
+        element = iterator.next();
+    }
+
+    while (element.done !== true) {
+        yield element.value;
+        element = iterator.next();
     }
 }
 
@@ -427,11 +426,8 @@ export function findFn<T>(
 
 export function maximum<T extends string | number | boolean>(iterable: Iterable<T>): T | null;
 export function maximum<T>(iterable: Iterable<T>, compare: Comparator<T>): T | null;
-export function maximum<T>(
-    iterable: Iterable<T>,
-    compare: Comparator<any> = defaultCompare
-): T | null {
-    return internalMaximum(iterable, compare);
+export function maximum<T>(iterable: Iterable<T>, compare?: Comparator<T>): T | null {
+    return internalMaximum(iterable, compare ?? (defaultCompare as unknown as Comparator<T>));
 }
 
 export function maximumFn<T>(compare: Comparator<T>): (iterable: Iterable<T>) => T | null {
@@ -444,11 +440,8 @@ function internalMaximum<T>(iterable: Iterable<T>, compare: Comparator<T>): T | 
 
 export function minimum<T extends string | number | boolean>(iterable: Iterable<T>): T | null;
 export function minimum<T>(iterable: Iterable<T>, compare: Comparator<T>): T | null;
-export function minimum<T>(
-    iterable: Iterable<T>,
-    compare: Comparator<any> = defaultCompare
-): T | null {
-    return internalMinimum(iterable, compare);
+export function minimum<T>(iterable: Iterable<T>, compare?: Comparator<T>): T | null {
+    return internalMinimum(iterable, compare ?? (defaultCompare as unknown as Comparator<T>));
 }
 
 export function minimumFn<T>(compare: Comparator<T>): (iterable: Iterable<T>) => T | null {
@@ -565,18 +558,19 @@ export function* scan1<T>(
     f: (accumulator: T, element: T, index: number) => T
 ): Iterable<T> {
     const iterator = iterable[Symbol.iterator]();
-    let {done, value} = iterator.next();
-    if (done) {
+    let element = iterator.next();
+
+    if (element.done === true) {
         return;
     }
-    let accumulator: T = value;
+
+    let accumulator = element.value;
     yield accumulator;
-    ({done, value} = iterator.next());
     let i = 1;
-    while (!done) {
-        yield (accumulator = f(accumulator, value, i));
-        ({done, value} = iterator.next());
-        ++i;
+    element = iterator.next();
+    while (element.done !== true) {
+        yield (accumulator = f(accumulator, element.value, i++));
+        element = iterator.next();
     }
 }
 
@@ -599,27 +593,27 @@ export function split<T>(iterable: Iterable<T>, index: number): [Iterable<T>, It
         for (const element of side) {
             yield element;
         }
-        let {done, value} = iterator.next();
-        while (!done && left.length < index) {
-            left.push(value);
+        let element = iterator.next();
+        while (element.done !== true && left.length < index) {
+            left.push(element.value);
             if (side === left) {
-                yield value;
+                yield element.value;
             }
-            ({done, value} = iterator.next());
+            element = iterator.next();
         }
-        if (done) {
+        if (element.done === true) {
             return;
         }
-        right.push(value);
+        right.push(element.value);
         if (side === left) {
             return;
         }
-        yield value;
-        ({done, value} = iterator.next());
-        while (!done) {
-            right.push(value);
-            yield value;
-            ({done, value} = iterator.next());
+        yield element.value;
+        element = iterator.next();
+        while (element.done !== true) {
+            right.push(element.value);
+            yield element.value;
+            element = iterator.next();
         }
     }
 
@@ -654,14 +648,14 @@ export function partition<T>(
         for (const element of side) {
             yield element;
         }
-        let {done, value} = iterator.next();
-        while (!done) {
-            const valueSide = predicate(value, i) ? left : right;
-            valueSide.push(value);
+        let element = iterator.next();
+        while (element.done !== true) {
+            const valueSide = predicate(element.value, i) ? left : right;
+            valueSide.push(element.value);
             if (valueSide === side) {
-                yield value;
+                yield element.value;
             }
-            ({done, value} = iterator.next());
+            element = iterator.next();
             ++i;
         }
     }
@@ -702,23 +696,23 @@ export function partitionWhile<T>(
         for (const element of side) {
             yield element;
         }
-        let {done, value} = iterator.next();
-        while (right.length === 0 && !done) {
-            const valueSide = predicate(value, i) ? left : right;
-            valueSide.push(value);
+        let element = iterator.next();
+        while (right.length === 0 && element.done !== true) {
+            const valueSide = predicate(element.value, i) ? left : right;
+            valueSide.push(element.value);
             if (valueSide === side) {
-                yield value;
+                yield element.value;
             }
             if (valueSide === right && side === left) {
                 return;
             }
-            ({done, value} = iterator.next());
+            element = iterator.next();
             ++i;
         }
-        while (!done) {
-            right.push(value);
-            yield value;
-            ({done, value} = iterator.next());
+        while (element.done !== true) {
+            right.push(element.value);
+            yield element.value;
+            element = iterator.next();
         }
     }
 
@@ -747,7 +741,7 @@ export function* zip<T, U>(a: Iterable<T>, b: Iterable<U>): Iterable<[T, U]> {
 
     let an = ai.next();
     let bn = bi.next();
-    while (!an.done && !bn.done) {
+    while (an.done !== true && bn.done !== true) {
         yield [an.value, bn.value];
         an = ai.next();
         bn = bi.next();
