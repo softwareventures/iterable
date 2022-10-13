@@ -159,7 +159,7 @@ export function* takeWhile<T>(
 
 export function takeWhileFn<T, U extends T>(
     predicate: (element: T, index: number) => element is U
-): (iterable: Iterable<T>) => Iterable<U>
+): (iterable: Iterable<T>) => Iterable<U>;
 export function takeWhileFn<T>(
     predicate: (element: T, index: number) => boolean
 ): (iterable: Iterable<T>) => Iterable<T>;
@@ -169,11 +169,16 @@ export function takeWhileFn<T>(
     return iterable => takeWhile(iterable, predicate);
 }
 
-export function takeUntil<T>(iterable: Iterable<T>, predicate: (element: T, index: number) => boolean): Iterable<T> {
+export function takeUntil<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): Iterable<T> {
     return takeWhile(iterable, (element, index) => !predicate(element, index));
 }
 
-export function takeUntilFn<T>(predicate: (element: T, index: number) => boolean): (iterable: Iterable<T>) => Iterable<T> {
+export function takeUntilFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => takeUntil(iterable, predicate);
 }
 
@@ -198,6 +203,19 @@ export function dropWhileFn<T>(
     predicate: (element: T, index: number) => boolean
 ): (iterable: Iterable<T>) => Iterable<T> {
     return iterable => dropWhile(iterable, predicate);
+}
+
+export function dropUntil<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): Iterable<T> {
+    return dropWhile(iterable, (element, index) => !predicate(element, index));
+}
+
+export function dropUntilFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => dropUntil(iterable, predicate);
 }
 
 export function* map<T, U>(
