@@ -266,6 +266,8 @@ export function filterFn<T>(
     return iterable => filter(iterable, predicate);
 }
 
+/** @deprecated This function is confusing, use {@link excludeFirst} instead,
+ * and invert the predicate. */
 export function* filterFirst<T>(
     iterable: Iterable<T>,
     predicate: (element: T, index: number) => boolean
@@ -285,6 +287,8 @@ export function* filterFirst<T>(
     }
 }
 
+/** @deprecated This function is confusing, use {@link excludeFirstFn} instead,
+ * and invert the predicate. */
 export function filterFirstFn<T>(
     predicate: (element: T, index: number) => boolean
 ): (iterable: Iterable<T>) => Iterable<T> {
