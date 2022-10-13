@@ -169,6 +169,14 @@ export function takeWhileFn<T>(
     return iterable => takeWhile(iterable, predicate);
 }
 
+export function takeUntil<T>(iterable: Iterable<T>, predicate: (element: T, index: number) => boolean): Iterable<T> {
+    return takeWhile(iterable, (element, index) => !predicate(element, index));
+}
+
+export function takeUntilFn<T>(predicate: (element: T, index: number) => boolean): (iterable: Iterable<T>) => Iterable<T> {
+    return iterable => takeUntil(iterable, predicate);
+}
+
 export function* dropWhile<T>(
     iterable: Iterable<T>,
     predicate: (element: T, index: number) => boolean
