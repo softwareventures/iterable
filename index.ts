@@ -135,6 +135,14 @@ export function dropFn<T>(count: number): (iterable: Iterable<T>) => Iterable<T>
     return iterable => drop(iterable, count);
 }
 
+export function takeWhile<T, U extends T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => element is U
+): Iterable<U>;
+export function takeWhile<T>(
+    iterable: Iterable<T>,
+    predicate: (element: T, index: number) => boolean
+): Iterable<T>;
 export function* takeWhile<T>(
     iterable: Iterable<T>,
     predicate: (element: T, index: number) => boolean
@@ -149,6 +157,12 @@ export function* takeWhile<T>(
     }
 }
 
+export function takeWhileFn<T, U extends T>(
+    predicate: (element: T, index: number) => element is U
+): (iterable: Iterable<T>) => Iterable<U>
+export function takeWhileFn<T>(
+    predicate: (element: T, index: number) => boolean
+): (iterable: Iterable<T>) => Iterable<T>;
 export function takeWhileFn<T>(
     predicate: (element: T, index: number) => boolean
 ): (iterable: Iterable<T>) => Iterable<T> {
