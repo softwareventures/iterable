@@ -93,6 +93,10 @@ export function notEmpty(iterable: Iterable<unknown>): boolean {
     return !empty(iterable);
 }
 
+export function reverse<T>(iterable: Iterable<T>): T[] {
+    return toArray(iterable).reverse();
+}
+
 export function* slice<T>(iterable: Iterable<T>, start = 0, end = Infinity): Iterable<T> {
     const iterator = iterable[Symbol.iterator]();
     for (let i = 0; i < start; ++i) {

@@ -40,6 +40,7 @@ import {
     push,
     remove,
     removeFirst,
+    reverse,
     scan,
     scan1,
     slice,
@@ -125,6 +126,10 @@ test("empty", t => {
     t.true(empty(emptyGenerator()));
     t.false(empty([1, 2, 3, 4]));
     t.false(empty(generator()));
+});
+
+test("reverse", t => {
+    t.deepEqual(reverse([1, 2, 3, 4]), [4, 3, 2, 1]);
 });
 
 test("slice", t => {
