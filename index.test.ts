@@ -33,6 +33,7 @@ import {
     minimum,
     only,
     or,
+    pairwise,
     partition,
     partitionWhile,
     prepend,
@@ -291,6 +292,22 @@ test("scan", t => {
 
 test("scan1", t => {
     t.deepEqual(toArray(scan1(generator(), (a, e, i) => a + e * i)), [1, 3, 9]);
+});
+
+test("pairwise", t => {
+    t.deepEqual(toArray(pairwise([])), []);
+    t.deepEqual(toArray(pairwise([1])), []);
+    t.deepEqual(toArray(pairwise([1, 2])), [[1, 2]]);
+    t.deepEqual(toArray(pairwise([1, 2, 3, 4, 5])), [
+        [1, 2],
+        [2, 3],
+        [3, 4],
+        [4, 5]
+    ]);
+    t.deepEqual(toArray(pairwise(generator())), [
+        [1, 2],
+        [2, 3]
+    ]);
 });
 
 test("split", t => {

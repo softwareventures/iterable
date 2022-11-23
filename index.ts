@@ -584,6 +584,22 @@ export function scan1Fn<T>(
     return iterable => scan1(iterable, f);
 }
 
+export function* pairwise<T>(iterable: Iterable<T>): Iterable<readonly [T, T]> {
+    const iterator = iterable[Symbol.iterator]();
+    let prev = iterator.next();
+
+    if (prev.done === true) {
+        return;
+    }
+
+    let element = iterator.next();
+    while (element.done !== true) {
+        yield [prev.value, element.value];
+        prev = element;
+        element = iterator.next();
+    }
+}
+
 /** Splits the Iterable at the specified index.
  *
  * Returns a tuple where the first element is the first `index` elements of the
