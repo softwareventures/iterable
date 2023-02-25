@@ -215,6 +215,8 @@ export function dropUntilFn<T>(
     return iterable => dropUntil(iterable, predicate);
 }
 
+/** Creates a new `Iterable` populated with the result of calling the function
+ * `f` on every element of `iterable`. */
 export function* map<T, U>(
     iterable: Iterable<T>,
     f: (element: T, index: number) => U
@@ -225,6 +227,10 @@ export function* map<T, U>(
     }
 }
 
+/** Curried variant of {@link map}.
+ *
+ * Returns a function that creates a new `Iterable` populated with the result
+ * of calling the function `f` on every element of`iterable`. */
 export function mapFn<T, U>(
     f: (element: T, index: number) => U
 ): (iterable: Iterable<T>) => Iterable<U> {
