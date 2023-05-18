@@ -27,7 +27,7 @@
   "dependencies": {
     "@softwareventures/nullable": "^1.0.0 || ^1.2.1 || ^2.0.0 || ^3.0.0",
     "@softwareventures/ordered": "^0.2.2 || ^1.0.0 || ^2.0.0",
-    "tslib": "2.5.0"
+    "tslib": "2.5.1"
   },
   "devDependencies": {
     "@softwareventures/eslint-config": "7.1.1",
