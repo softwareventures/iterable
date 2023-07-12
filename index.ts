@@ -448,6 +448,16 @@ function internalMaximum<T>(iterable: Iterable<T>, compare: Comparator<T>): T | 
     return fold1(iterable, (a, e) => (compare(e, a) > 0 ? e : a));
 }
 
+export function maximumBy<T>(iterable: Iterable<T>, select: (element: T) => number): T | null {
+    return maximum(iterable, (a, b) => defaultCompare(select(a), select(b)));
+}
+
+export function maximumByFn<T>(
+    select: (element: T) => number
+): (iterable: Iterable<T>) => T | null {
+    return iterable => maximumBy(iterable, select);
+}
+
 export function minimum<T extends string | number | boolean>(iterable: Iterable<T>): T | null;
 export function minimum<T>(iterable: Iterable<T>, compare: Comparator<T>): T | null;
 export function minimum<T>(iterable: Iterable<T>, compare?: Comparator<T>): T | null {
