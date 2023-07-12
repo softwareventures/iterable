@@ -472,6 +472,16 @@ function internalMinimum<T>(iterable: Iterable<T>, compare: Comparator<T>): T | 
     return fold1(iterable, (a, e) => (compare(e, a) < 0 ? e : a));
 }
 
+export function minimumBy<T>(iterable: Iterable<T>, select: (element: T) => number): T | null {
+    return minimum(iterable, (a, b) => defaultCompare(select(a), select(b)));
+}
+
+export function minimumByFn<T>(
+    select: (element: T) => number
+): (iterable: Iterable<T>) => T | null {
+    return iterable => minimumBy(iterable, select);
+}
+
 export function sum(iterable: Iterable<number>): number {
     return fold(iterable, (a, e) => a + e, 0);
 }
